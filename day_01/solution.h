@@ -28,7 +28,7 @@ namespace aoc
 
     }
 
-    void solve1_part1(std::ifstream &input)
+    void solve1_part1(std::ifstream &input, bool verbose)
     {
         std::string line;
         int sum = 0;
@@ -44,13 +44,14 @@ namespace aoc
             int combined = d1 * 10 + d2;
             sum += combined;
 
-            printf("first digit: %d. second digit: %d. combined: %d\n", d1, d2, combined);
+            if (verbose)
+                printf("first digit: %d. second digit: %d. combined: %d\n", d1, d2, combined);
         }
 
         std::cout << sum << std::endl;
     }
 
-    void solve1_part2(std::ifstream &input)
+    void solve1_part2(std::ifstream &input, bool verbose)
     {
         // same as above but the first "digit" can be spelt out with text.
 
@@ -58,7 +59,7 @@ namespace aoc
 
         std::string line;
         int sum = 0;
-        while (getline(input, line))
+        while (std::getline(input, line))
         {
             int firstDigit = -1;
             int lastDigit = -1;
@@ -96,7 +97,8 @@ namespace aoc
                 throw std::runtime_error("bad input!");
 
             const int combined = firstDigit * 10 + lastDigit;
-            printf("first digit: %d. second digit: %d. combined: %d\n", firstDigit, lastDigit, combined);
+            if (verbose)
+                printf("first digit: %d. second digit: %d. combined: %d\n", firstDigit, lastDigit, combined);
             sum += combined;
         }
 
