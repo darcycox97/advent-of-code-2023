@@ -4,6 +4,7 @@
 #include <fstream>
 #include "day_01/solution.h"
 #include "day_02/solution.h"
+#include "day_03/solution.h"
 
 int main(int argc, char **argv)
 {
@@ -39,6 +40,13 @@ int main(int argc, char **argv)
             aoc::solve2_part1(input_file, verbose);
         else
             aoc::solve2_part2(input_file, verbose);
+    }
+    else if (day == 3)
+    {
+        if (variant == 1)
+            aoc::solve3_part1(input_file, verbose);
+        else
+            aoc::solve3_part2(input_file, verbose);
     }
 
     input_file.close();
