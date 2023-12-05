@@ -2,23 +2,20 @@
 #include <iostream>
 #include <sstream>
 
-namespace aoc
+namespace aoc2
 {
-    namespace
+    struct CubeSet
     {
-        struct CubeSet
-        {
-            int mRed;
-            int mGreen;
-            int mBlue;
-        };
+        int mRed;
+        int mGreen;
+        int mBlue;
+    };
 
-        struct Game
-        {
-            int mId;
-            std::vector<CubeSet> mRounds;
-        };
-    }
+    struct Game
+    {
+        int mId;
+        std::vector<CubeSet> mRounds;
+    };
 
     Game parse_game(const std::string &line)
     {

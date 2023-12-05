@@ -7,26 +7,21 @@
 #include <map>
 #include <set>
 
-namespace aoc
+namespace aoc1
 {
 
-    namespace
-    {
+    const std::array<std::string, 9> DIGITS_AS_TEXT{
+        "one",
+        "two",
+        "three",
+        "four",
+        "five",
+        "six",
+        "seven",
+        "eight",
+        "nine"};
 
-        const std::array<std::string, 9> DIGITS_AS_TEXT{
-            "one",
-            "two",
-            "three",
-            "four",
-            "five",
-            "six",
-            "seven",
-            "eight",
-            "nine"};
-
-        const int MAX_DIGIT_LEN = 5;
-
-    }
+    const int MAX_DIGIT_LEN = 5;
 
     void solve1_part1(std::ifstream &input, bool verbose)
     {

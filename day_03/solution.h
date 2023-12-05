@@ -2,76 +2,71 @@
 #include <iostream>
 #include <sstream>
 
-namespace aoc
+namespace aoc3
 {
 
-    namespace
+    struct Point
     {
+        int x;
+        int y;
+    };
+    bool operator<(const Point &l, const Point &r)
+    {
+        return l.x < r.x || (l.x == r.x && l.y < r.y);
+    }
 
-        struct Point
-        {
-            int x;
-            int y;
-        };
-        bool operator<(const Point &l, const Point &r)
-        {
-            return l.x < r.x || (l.x == r.x && l.y < r.y);
-        }
+    struct Digit
+    {
+        int mValue;
+        int mX1;
+        int mX2;
+        int mY;
+    };
 
-        struct Digit
+    std::pair<std::vector<Digit>, std::map<Point, char>> parse(std::ifstream &input, bool verbose)
+    {
+        std::string line;
+        int y = 0;
+        std::map<Point, char> symbolLocs;
+        std::vector<Digit> digits;
+        while (std::getline(input, line))
         {
-            int mValue;
-            int mX1;
-            int mX2;
-            int mY;
-        };
-
-        std::pair<std::vector<Digit>, std::map<Point, char>> parse(std::ifstream &input, bool verbose)
-        {
-            std::string line;
-            int y = 0;
-            std::map<Point, char> symbolLocs;
-            std::vector<Digit> digits;
-            while (std::getline(input, line))
+            std::string num;
+            for (int x = 0; x < line.size(); ++x)
             {
-                std::string num;
-                for (int x = 0; x < line.size(); ++x)
+                bool canFlush = false;
+                if (isdigit(line[x]))
                 {
-                    bool canFlush = false;
-                    if (isdigit(line[x]))
-                    {
-                        num.push_back(line[x]);
-                    }
-                    else if (line[x] != '.')
-                    {
-                        // then we've found a symbol. grab the coordinates
-                        symbolLocs[Point{x, y}] = line[x];
-                        if (verbose)
-                            printf("found symbol %c at x=%d y=%d\n", line[x], x, y);
-                    }
+                    num.push_back(line[x]);
+                }
+                else if (line[x] != '.')
+                {
+                    // then we've found a symbol. grab the coordinates
+                    symbolLocs[Point{x, y}] = line[x];
+                    if (verbose)
+                        printf("found symbol %c at x=%d y=%d\n", line[x], x, y);
+                }
 
-                    // peek ahead to check if we have reached the end of a number
-                    if (!num.empty() && (x + 1 == line.size() || !isdigit(line[x + 1])))
-                    {
-                        // flush the current number
-                        int start = x - num.size() + 1;
-                        int end = x;
-                        digits.push_back(Digit{std::stoi(num), start, end, y});
-                        num.clear();
+                // peek ahead to check if we have reached the end of a number
+                if (!num.empty() && (x + 1 == line.size() || !isdigit(line[x + 1])))
+                {
+                    // flush the current number
+                    int start = x - num.size() + 1;
+                    int end = x;
+                    digits.push_back(Digit{std::stoi(num), start, end, y});
+                    num.clear();
 
-                        if (verbose)
-                        {
-                            const auto &d = digits.back();
-                            printf("found digit %d x1=%d x2=%d y=%d\n", d.mValue, d.mX1, d.mX2, d.mY);
-                        }
+                    if (verbose)
+                    {
+                        const auto &d = digits.back();
+                        printf("found digit %d x1=%d x2=%d y=%d\n", d.mValue, d.mX1, d.mX2, d.mY);
                     }
                 }
-                ++y;
             }
-
-            return std::make_pair(digits, symbolLocs);
+            ++y;
         }
 
+        return std::make_pair(digits, symbolLocs);
     }
 
     void solve3_part1(std::ifstream &input, bool verbose)
