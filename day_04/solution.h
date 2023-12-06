@@ -73,7 +73,7 @@ namespace aoc4
         std::vector<int> cardCopies(games.size());
         std::fill(cardCopies.begin(), cardCopies.end(), 1);
 
-        for (int i = 0; i < games.size(); ++i)
+        for (int i = 0; i < (int)games.size(); ++i)
         {
             const auto &g = games[i];
 

@@ -32,9 +32,8 @@ namespace aoc3
         while (std::getline(input, line))
         {
             std::string num;
-            for (int x = 0; x < line.size(); ++x)
+            for (int x = 0; x < (int)line.size(); ++x)
             {
-                bool canFlush = false;
                 if (isdigit(line[x]))
                 {
                     num.push_back(line[x]);
@@ -48,7 +47,7 @@ namespace aoc3
                 }
 
                 // peek ahead to check if we have reached the end of a number
-                if (!num.empty() && (x + 1 == line.size() || !isdigit(line[x + 1])))
+                if (!num.empty() && (x + 1 == (int)line.size() || !isdigit(line[x + 1])))
                 {
                     // flush the current number
                     int start = x - num.size() + 1;

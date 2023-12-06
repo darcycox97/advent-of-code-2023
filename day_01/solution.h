@@ -59,7 +59,7 @@ namespace aoc1
             int firstDigit = -1;
             int lastDigit = -1;
 
-            for (int i = 0; i < line.size(); ++i)
+            for (int i = 0; i < (int)line.size(); ++i)
             {
                 int d = -1;
                 if (isdigit(line[i]))
@@ -68,7 +68,7 @@ namespace aoc1
                 }
                 else
                 {
-                    for (int j = i + 1; j < line.size() && j - i + 1 <= MAX_DIGIT_LEN; ++j)
+                    for (int j = i + 1; j < (int)line.size() && j - i + 1 <= MAX_DIGIT_LEN; ++j)
                     {
                         std::string candidate = line.substr(i, j - i + 1);
                         const auto it = std::find(DIGITS_AS_TEXT.begin(), DIGITS_AS_TEXT.end(), candidate);

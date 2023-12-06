@@ -73,7 +73,7 @@ namespace aoc2
             if (verbose)
             {
                 printf("id: %d, rounds=%lu\n", game.mId, game.mRounds.size());
-                for (int i = 0; i < game.mRounds.size(); ++i)
+                for (int i = 0; i < (int)game.mRounds.size(); ++i)
                 {
                     auto r = game.mRounds[i];
                     printf("round %d: %d blue, %d red, %d, green\n", (int)i + 1, r.mBlue, r.mRed, r.mGreen);

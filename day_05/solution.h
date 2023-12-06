@@ -196,7 +196,7 @@ namespace aoc5
 
         // seeds sequence now represents ranges with a source and a length.
         int64_t minLocation = std::numeric_limits<int64_t>::max();
-        for (int i = 0; i < d.mSeeds.size(); i += 2)
+        for (int i = 0; i < (int)d.mSeeds.size(); i += 2)
         {
             auto start = d.mSeeds[i];
             auto len = d.mSeeds[i + 1];
