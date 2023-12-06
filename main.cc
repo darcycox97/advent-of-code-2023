@@ -6,6 +6,7 @@
 #include "day_02/solution.h"
 #include "day_03/solution.h"
 #include "day_04/solution.h"
+#include "day_05/solution.h"
 
 int main(int argc, char **argv)
 {
@@ -56,6 +57,14 @@ int main(int argc, char **argv)
         else
             aoc4::solve4_part2(input_file, verbose);
     }
+    else if (day == 5)
+    {
+        if (variant == 1)
+            aoc5::solve5_part1(input_file, verbose);
+        else
+            aoc5::solve5_part2(input_file, verbose);
+    }
+
     input_file.close();
 
     return 0;
