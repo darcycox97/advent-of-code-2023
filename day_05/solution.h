@@ -35,6 +35,8 @@ namespace aoc5
     {
         std::vector<int64_t> mSeeds;
 
+        // TODO: should really just collapse the mapping into one seed to location map...
+        // then it's easier to be smarter abuot which seeds don't need to be checked in part 2.
         Mapping mSeedToSoil;
         Mapping mSoilToFertilizer;
         Mapping mFertilizerToWater;
