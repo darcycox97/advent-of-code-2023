@@ -4,6 +4,7 @@
 #include <sstream>
 #include <fstream>
 #include <limits>
+#include <iostream>
 
 namespace aoc5
 {
@@ -16,14 +17,19 @@ namespace aoc5
     // keyed by upper limit (inclusive)
     using Mapping = std::map<int64_t, RuleEntry>;
 
-    // lower bound
-    // 19: 20 not less than 19 -> lower bound = 20
-    // 20: 20 not less than 20 -> lower bound = 20
-    // 25: 20 less than 25. 40 not less than 25 -> lower bound = 40.
+    int64_t getSourceToDestOffset(const Mapping &m, int64_t source)
+    {
+        auto it = m.lower_bound(source);
+        if (it == m.end())
+            return 0;
 
-    // upper bound
-    // 19: 20 greater than 19 -> upper bound = 20
-    // 20: 20 not greater than 20. 40 greater than 20 -> upper bound = 40
+        assert(source <= it->second.mEnd);
+
+        if (source >= it->second.mStart)
+            return it->second.mOffset;
+        else
+            return 0;
+    }
 
     struct Data
     {
@@ -36,26 +42,36 @@ namespace aoc5
         Mapping mLightToTemperature;
         Mapping mTemperatureToHumidity;
         Mapping mHumidityToLocation;
+
+        int64_t GetLocationFromSeed(int64_t s) const
+        {
+            // seed to soil
+            auto value = s + getSourceToDestOffset(mSeedToSoil, s);
+
+            // soil to fert
+            value += getSourceToDestOffset(mSoilToFertilizer, value);
+
+            // fert to water
+            value += getSourceToDestOffset(mFertilizerToWater, value);
+
+            // water to light
+            value += getSourceToDestOffset(mWaterToLight, value);
+
+            // light to temp
+            value += getSourceToDestOffset(mLightToTemperature, value);
+
+            // temp to humidity
+            value += getSourceToDestOffset(mTemperatureToHumidity, value);
+
+            // humidity to location
+            value += getSourceToDestOffset(mHumidityToLocation, value);
+
+            return value;
+        }
     };
 
     Mapping parseMapping(std::ifstream &input, bool verbose)
     {
-        // TODO
-
-        // e.g. 40 20 5 means [20, 24] maps to [40, 44]
-
-        // if we have:
-        // [20, 24] -> [40, 44]
-        // [35, 40] -> [90, 95]
-
-        // can represent as:
-        // 0 -> +0
-        // 20 -> +20
-        // 25 -> +0
-        // 35 -> +55
-        // 41 -> +0
-
-        // then map.lower_bound(x) is the offset to apply.
         Mapping m;
         std::string line;
         while (isdigit(input.peek()))
@@ -155,20 +171,6 @@ namespace aoc5
         return out;
     }
 
-    int64_t getSourceToDestOffset(const Mapping &m, int64_t source)
-    {
-        auto it = m.lower_bound(source);
-        if (it == m.end())
-            return 0;
-
-        assert(source <= it->second.mEnd);
-
-        if (source >= it->second.mStart)
-            return it->second.mOffset;
-        else
-            return 0;
-    }
-
     void solve5_part1(std::ifstream &input, bool verbose)
     {
         Data d = parse(input, verbose);
@@ -176,27 +178,7 @@ namespace aoc5
         int64_t minLocation = std::numeric_limits<int64_t>::max();
         for (auto s : d.mSeeds)
         {
-            // seed to soil
-            auto value = s + getSourceToDestOffset(d.mSeedToSoil, s);
-
-            // soil to fert
-            value += getSourceToDestOffset(d.mSoilToFertilizer, value);
-
-            // fert to water
-            value += getSourceToDestOffset(d.mFertilizerToWater, value);
-
-            // water to light
-            value += getSourceToDestOffset(d.mWaterToLight, value);
-
-            // light to temp
-            value += getSourceToDestOffset(d.mLightToTemperature, value);
-
-            // temp to humidity
-            value += getSourceToDestOffset(d.mTemperatureToHumidity, value);
-
-            // humidity to location
-            value += getSourceToDestOffset(d.mHumidityToLocation, value);
-
+            auto value = d.GetLocationFromSeed(s);
             if (value < minLocation)
                 minLocation = value;
         }
@@ -222,30 +204,7 @@ namespace aoc5
             printf("processing %lld seeds from %lld to %lld\n", len, start, start + len - 1);
             for (auto s = start; s < start + len; ++s)
             {
-                // seed to soil
-                auto value = s + getSourceToDestOffset(d.mSeedToSoil, s);
-
-                // soil to fert
-                value += getSourceToDestOffset(d.mSoilToFertilizer, value);
-
-                // fert to water
-                value += getSourceToDestOffset(d.mFertilizerToWater, value);
-
-                // water to light
-                value += getSourceToDestOffset(d.mWaterToLight, value);
-
-                // light to temp
-                value += getSourceToDestOffset(d.mLightToTemperature, value);
-
-                // temp to humidity
-                value += getSourceToDestOffset(d.mTemperatureToHumidity, value);
-
-                // humidity to location
-                value += getSourceToDestOffset(d.mHumidityToLocation, value);
-
-                if (value < 0)
-                    continue;
-
+                auto value = d.GetLocationFromSeed(s);
                 if (value < minLocation)
                     minLocation = value;
             }
