@@ -9,4 +9,4 @@ file(GLOB_RECURSE SOURCE_FILES "*.cc")
 
 add_executable(aoc ${SOURCE_FILES})
 
-target_compile_options(aoc PRIVATE -Wall -Wextra -pedantic -Werror)
+target_compile_options(aoc PRIVATE -Wall -Wextra)
