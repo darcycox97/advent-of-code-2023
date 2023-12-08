@@ -2,6 +2,8 @@
 #include <iostream>
 #include <sstream>
 
+#include "../util/print.h"
+
 namespace aoc3
 {
 
@@ -23,7 +25,7 @@ namespace aoc3
         int mY;
     };
 
-    std::pair<std::vector<Digit>, std::map<Point, char>> parse(std::ifstream &input, bool verbose)
+    std::pair<std::vector<Digit>, std::map<Point, char>> parse(std::ifstream &input)
     {
         std::string line;
         int y = 0;
@@ -42,8 +44,8 @@ namespace aoc3
                 {
                     // then we've found a symbol. grab the coordinates
                     symbolLocs[Point{x, y}] = line[x];
-                    if (verbose)
-                        printf("found symbol %c at x=%d y=%d\n", line[x], x, y);
+
+                    util::verbose_print("found symbol %c at x=%d y=%d\n", line[x], x, y);
                 }
 
                 // peek ahead to check if we have reached the end of a number
@@ -55,10 +57,9 @@ namespace aoc3
                     digits.push_back(Digit{std::stoi(num), start, end, y});
                     num.clear();
 
-                    if (verbose)
                     {
                         const auto &d = digits.back();
-                        printf("found digit %d x1=%d x2=%d y=%d\n", d.mValue, d.mX1, d.mX2, d.mY);
+                        util::verbose_print("found digit %d x1=%d x2=%d y=%d\n", d.mValue, d.mX1, d.mX2, d.mY);
                     }
                 }
             }
@@ -68,9 +69,9 @@ namespace aoc3
         return std::make_pair(digits, symbolLocs);
     }
 
-    void solve3_part1(std::ifstream &input, bool verbose)
+    void solve3_part1(std::ifstream &input)
     {
-        auto [digits, symbols] = parse(input, verbose);
+        auto [digits, symbols] = parse(input);
 
         int sum = 0;
         for (const auto &d : digits)
@@ -94,8 +95,8 @@ namespace aoc3
 
             if (found)
             {
-                if (verbose)
-                    printf("found part with value %d\n", d.mValue);
+
+                util::verbose_print("found part with value %d\n", d.mValue);
 
                 sum += d.mValue;
             }
@@ -104,9 +105,9 @@ namespace aoc3
         std::cout << sum << std::endl;
     }
 
-    void solve3_part2(std::ifstream &input, bool verbose)
+    void solve3_part2(std::ifstream &input)
     {
-        auto [digits, symbols] = parse(input, verbose);
+        auto [digits, symbols] = parse(input);
 
         // find all gear ratios (multiplied part numbers) and add them.
         // gear = any * symbol adjacent to two parts.
@@ -139,8 +140,7 @@ namespace aoc3
             int part1 = it->second;
             int part2 = (++it)->second;
 
-            if (verbose)
-                printf("found gear at x=%d y=%d, part1 = %d part2 = %d\n", xy.x, xy.y, part1, part2);
+            util::verbose_print("found gear at x=%d y=%d, part1 = %d part2 = %d\n", xy.x, xy.y, part1, part2);
 
             sum += (part1 * part2);
         }

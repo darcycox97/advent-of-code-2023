@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <numeric>
 
+#include "../util/print.h"
+
 namespace aoc4
 {
 
@@ -14,7 +16,7 @@ namespace aoc4
         std::vector<int> mMyNumbers;
     };
 
-    std::vector<Game> parse(std::ifstream &input, bool verbose)
+    std::vector<Game> parse(std::ifstream &input)
     {
         std::vector<Game> out;
         std::string line;
@@ -39,17 +41,16 @@ namespace aoc4
                 g.mMyNumbers.push_back(std::stoi(token));
             }
 
-            if (verbose)
-                printf("parsed game with %lu winning tokens and %lu given tokens\n", g.mWinningNumbers.size(), g.mMyNumbers.size());
+            util::verbose_print("parsed game with %lu winning tokens and %lu given tokens\n", g.mWinningNumbers.size(), g.mMyNumbers.size());
             out.push_back(g);
         }
 
         return out;
     }
 
-    void solve4_part1(std::ifstream &input, bool verbose)
+    void solve4_part1(std::ifstream &input)
     {
-        std::vector<Game> games = parse(input, verbose);
+        std::vector<Game> games = parse(input);
 
         int sum = 0;
         for (const auto &g : games)
@@ -67,9 +68,9 @@ namespace aoc4
         std::cout << sum << std::endl;
     }
 
-    void solve4_part2(std::ifstream &input, bool verbose)
+    void solve4_part2(std::ifstream &input)
     {
-        std::vector<Game> games = parse(input, verbose);
+        std::vector<Game> games = parse(input);
         std::vector<int> cardCopies(games.size());
         std::fill(cardCopies.begin(), cardCopies.end(), 1);
 
@@ -80,8 +81,7 @@ namespace aoc4
             int winning = std::count_if(g.mMyNumbers.begin(), g.mMyNumbers.end(), [&g](int n)
                                         { return g.mWinningNumbers.contains(n); });
 
-            if (verbose)
-                printf("game %d wins %d more cards\n", i, winning);
+            util::verbose_print("game %d wins %d more cards\n", i, winning);
 
             for (int j = i + 1; j <= i + winning; ++j)
                 cardCopies[j] += cardCopies[i];

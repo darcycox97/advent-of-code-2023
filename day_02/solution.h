@@ -2,6 +2,8 @@
 #include <iostream>
 #include <sstream>
 
+#include "../util/print.h"
+
 namespace aoc2
 {
     struct CubeSet
@@ -62,7 +64,7 @@ namespace aoc2
         return g;
     }
 
-    std::vector<Game> parse_games(std::ifstream &input, bool verbose)
+    std::vector<Game> parse_games(std::ifstream &input)
     {
         std::vector<Game> games;
         std::string line;
@@ -70,13 +72,13 @@ namespace aoc2
         {
             auto game = parse_game(line);
             games.push_back(game);
-            if (verbose)
+
             {
-                printf("id: %d, rounds=%lu\n", game.mId, game.mRounds.size());
+                util::verbose_print("id: %d, rounds=%lu\n", game.mId, game.mRounds.size());
                 for (int i = 0; i < (int)game.mRounds.size(); ++i)
                 {
                     auto r = game.mRounds[i];
-                    printf("round %d: %d blue, %d red, %d, green\n", (int)i + 1, r.mBlue, r.mRed, r.mGreen);
+                    util::verbose_print("round %d: %d blue, %d red, %d, green\n", (int)i + 1, r.mBlue, r.mRed, r.mGreen);
                 }
             }
         }
@@ -84,14 +86,14 @@ namespace aoc2
         return games;
     }
 
-    void solve2_part1(std::ifstream &input, bool verbose)
+    void solve2_part1(std::ifstream &input)
     {
         const int availRed = 12;
         const int availGreen = 13;
         const int availBlue = 14;
 
         int sum = 0;
-        for (auto game : parse_games(input, verbose))
+        for (auto game : parse_games(input))
         {
             bool isPossible = true;
             for (const auto &r : game.mRounds)
@@ -103,8 +105,7 @@ namespace aoc2
                 }
             }
 
-            if (verbose)
-                printf("game %d. possible=%s\n", game.mId, isPossible ? "true" : "false");
+            util::verbose_print("game %d. possible=%s\n", game.mId, isPossible ? "true" : "false");
 
             if (isPossible)
                 sum += game.mId;
@@ -113,12 +114,12 @@ namespace aoc2
         std::cout << sum << std::endl;
     }
 
-    void solve2_part2(std::ifstream &input, bool verbose)
+    void solve2_part2(std::ifstream &input)
     {
         // find the fewest number of cubes of each color to make each game possible.
 
         int sum = 0;
-        for (auto game : parse_games(input, verbose))
+        for (auto game : parse_games(input))
         {
             int minRed = 0;
             int minGreen = 0;
@@ -133,8 +134,7 @@ namespace aoc2
 
             int gamePower = minRed * minGreen * minBlue;
 
-            if (verbose)
-                printf("game %d: min red: %d, min green: %d, min blue: %d, power: %d\n", game.mId, minRed, minGreen, minBlue, gamePower);
+            util::verbose_print("game %d: min red: %d, min green: %d, min blue: %d, power: %d\n", game.mId, minRed, minGreen, minBlue, gamePower);
 
             sum += gamePower;
         }

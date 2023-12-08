@@ -7,6 +7,8 @@
 #include <map>
 #include <set>
 
+#include "../util/print.h"
+
 namespace aoc1
 {
 
@@ -23,7 +25,7 @@ namespace aoc1
 
     const int MAX_DIGIT_LEN = 5;
 
-    void solve1_part1(std::ifstream &input, bool verbose)
+    void solve1_part1(std::ifstream &input)
     {
         std::string line;
         int sum = 0;
@@ -39,14 +41,13 @@ namespace aoc1
             int combined = d1 * 10 + d2;
             sum += combined;
 
-            if (verbose)
-                printf("first digit: %d. second digit: %d. combined: %d\n", d1, d2, combined);
+            util::verbose_print("first digit: %d. second digit: %d. combined: %d\n", d1, d2, combined);
         }
 
         std::cout << sum << std::endl;
     }
 
-    void solve1_part2(std::ifstream &input, bool verbose)
+    void solve1_part2(std::ifstream &input)
     {
         // same as above but the first "digit" can be spelt out with text.
 
@@ -92,12 +93,11 @@ namespace aoc1
                 throw std::runtime_error("bad input!");
 
             const int combined = firstDigit * 10 + lastDigit;
-            if (verbose)
-                printf("first digit: %d. second digit: %d. combined: %d\n", firstDigit, lastDigit, combined);
+            util::verbose_print("first digit: %d. second digit: %d. combined: %d\n", firstDigit, lastDigit, combined);
             sum += combined;
         }
 
-        printf("total: %d\n", sum);
+        std::cout << sum << std::endl;
     }
 
 }

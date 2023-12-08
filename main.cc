@@ -1,7 +1,8 @@
 #include <iostream>
-// #include "nest/test.h"
-
 #include <fstream>
+
+#include "util/print.h"
+
 #include "day_01/solution.h"
 #include "day_02/solution.h"
 #include "day_03/solution.h"
@@ -25,6 +26,8 @@ int main(int argc, char **argv)
     if (argc == 5 && strcmp(argv[4], "-v") == 0)
         verbose = true;
 
+    util::set_verbose(verbose);
+
     printf("Running day %d part %d with input file %s. verbose=%s\n", day, variant, input_filename, verbose ? "true" : "false");
 
     std::ifstream input_file;
@@ -33,44 +36,44 @@ int main(int argc, char **argv)
     if (day == 1)
     {
         if (variant == 1)
-            aoc1::solve1_part1(input_file, verbose);
+            aoc1::solve1_part1(input_file);
         else
-            aoc1::solve1_part2(input_file, verbose);
+            aoc1::solve1_part2(input_file);
     }
     else if (day == 2)
     {
         if (variant == 1)
-            aoc2::solve2_part1(input_file, verbose);
+            aoc2::solve2_part1(input_file);
         else
-            aoc2::solve2_part2(input_file, verbose);
+            aoc2::solve2_part2(input_file);
     }
     else if (day == 3)
     {
         if (variant == 1)
-            aoc3::solve3_part1(input_file, verbose);
+            aoc3::solve3_part1(input_file);
         else
-            aoc3::solve3_part2(input_file, verbose);
+            aoc3::solve3_part2(input_file);
     }
     else if (day == 4)
     {
         if (variant == 1)
-            aoc4::solve4_part1(input_file, verbose);
+            aoc4::solve4_part1(input_file);
         else
-            aoc4::solve4_part2(input_file, verbose);
+            aoc4::solve4_part2(input_file);
     }
     else if (day == 5)
     {
         if (variant == 1)
-            aoc5::solve5_part1(input_file, verbose);
+            aoc5::solve5_part1(input_file);
         else
-            aoc5::solve5_part2(input_file, verbose);
+            aoc5::solve5_part2(input_file);
     }
     else if (day == 6)
     {
         if (variant == 1)
-            aoc6::solve6_part1(input_file, verbose);
+            aoc6::solve6_part1(input_file);
         else
-            aoc6::solve6_part2(input_file, verbose);
+            aoc6::solve6_part2(input_file);
     }
 
     input_file.close();

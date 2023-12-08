@@ -6,6 +6,8 @@
 #include <limits>
 #include <iostream>
 
+#include "../util/print.h"
+
 namespace aoc5
 {
     struct RuleEntry
@@ -72,7 +74,7 @@ namespace aoc5
         }
     };
 
-    Mapping parseMapping(std::ifstream &input, bool verbose)
+    Mapping parseMapping(std::ifstream &input)
     {
         Mapping m;
         std::string line;
@@ -95,14 +97,14 @@ namespace aoc5
                 .mOffset = dest - source};
 
             m[re.mEnd] = re;
-            if (verbose)
-                printf("processed rule: start=%lld end=%lld offset=%lld\n", re.mStart, re.mEnd, re.mOffset);
+
+            util::verbose_print("processed rule: start=%lld end=%lld offset=%lld\n", re.mStart, re.mEnd, re.mOffset);
         }
 
         return m;
     }
 
-    Data parse(std::ifstream &input, bool verbose)
+    Data parse(std::ifstream &input)
     {
         Data out;
 
@@ -113,69 +115,68 @@ namespace aoc5
         while (input >> seed)
             out.mSeeds.push_back(seed);
 
-        if (verbose)
-            printf("parsed %lu seeds\n", out.mSeeds.size());
+        util::verbose_print("parsed %lu seeds\n", out.mSeeds.size());
 
         input.clear(); // reset the error state
         while (std::getline(input, line))
         {
             if (line.find("seed-to-soil map:") != std::string::npos)
             {
-                if (verbose)
-                    printf("parsing seed to soil mapping\n");
 
-                out.mSeedToSoil = parseMapping(input, verbose);
+                util::verbose_print("parsing seed to soil mapping\n");
+
+                out.mSeedToSoil = parseMapping(input);
             }
             else if (line.find("soil-to-fertilizer map:") != std::string::npos)
             {
-                if (verbose)
-                    printf("parsing soil to fertilizer mapping\n");
 
-                out.mSoilToFertilizer = parseMapping(input, verbose);
+                util::verbose_print("parsing soil to fertilizer mapping\n");
+
+                out.mSoilToFertilizer = parseMapping(input);
             }
             else if (line.find("fertilizer-to-water map:") != std::string::npos)
             {
-                if (verbose)
-                    printf("parsing fertilizer to water mapping\n");
 
-                out.mFertilizerToWater = parseMapping(input, verbose);
+                util::verbose_print("parsing fertilizer to water mapping\n");
+
+                out.mFertilizerToWater = parseMapping(input);
             }
             else if (line.find("water-to-light map:") != std::string::npos)
             {
-                if (verbose)
-                    printf("parsing water to light mapping\n");
 
-                out.mWaterToLight = parseMapping(input, verbose);
+                util::verbose_print("parsing water to light mapping\n");
+
+                out.mWaterToLight = parseMapping(input);
             }
             else if (line.find("light-to-temperature map:") != std::string::npos)
             {
-                if (verbose)
-                    printf("parsing light to temp mapping\n");
 
-                out.mLightToTemperature = parseMapping(input, verbose);
+                util::verbose_print("parsing light to temp mapping\n");
+
+                out.mLightToTemperature = parseMapping(input);
             }
             else if (line.find("temperature-to-humidity map:") != std::string::npos)
             {
-                if (verbose)
-                    printf("parsing temp to humidity mapping\n");
 
-                out.mTemperatureToHumidity = parseMapping(input, verbose);
+                util::verbose_print("parsing temp to humidity mapping\n");
+
+                out.mTemperatureToHumidity = parseMapping(input);
             }
             else if (line.find("humidity-to-location map:") != std::string::npos)
             {
-                if (verbose)
-                    printf("parsing humidity to location mapping\n");
 
-                out.mHumidityToLocation = parseMapping(input, verbose);
+                util::verbose_print("parsing humidity to location mapping\n");
+
+                out.mHumidityToLocation = parseMapping(input);
             }
         }
 
         return out;
     }
 
-    void solve5_part1(std::ifstream &input, bool verbose)
+    void solve5_part1(std::ifstream &input)
     {
-        Data d = parse(input, verbose);
+        Data d = parse(input);
 
         int64_t minLocation = std::numeric_limits<int64_t>::max();
         for (auto s : d.mSeeds)
@@ -188,9 +189,9 @@ namespace aoc5
         std::cout << minLocation << std::endl;
     }
 
-    void solve5_part2(std::ifstream &input, bool verbose)
+    void solve5_part2(std::ifstream &input)
     {
-        Data d = parse(input, verbose);
+        Data d = parse(input);
 
         // TODO: this is inefficient. should determine which ranges of seeds have different mappings.
         // for any ranges with the same mapping, the first one in the mapping will always have the lowest location.
@@ -203,7 +204,7 @@ namespace aoc5
             auto start = d.mSeeds[i];
             auto len = d.mSeeds[i + 1];
 
-            printf("processing %lld seeds from %lld to %lld\n", len, start, start + len - 1);
+            util::verbose_print("processing %lld seeds from %lld to %lld\n", len, start, start + len - 1);
             for (auto s = start; s < start + len; ++s)
             {
                 auto value = d.GetLocationFromSeed(s);

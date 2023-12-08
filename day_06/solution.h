@@ -5,6 +5,8 @@
 #include <cassert>
 #include <cmath>
 
+#include "../util/print.h"
+
 namespace aoc6
 {
 
@@ -14,7 +16,7 @@ namespace aoc6
         long long mRecordDistance;
     };
 
-    std::vector<BoatRace> parse(std::ifstream &input, bool verbose)
+    std::vector<BoatRace> parse(std::ifstream &input)
     {
         std::vector<int> durations;
         std::vector<int> records;
@@ -37,8 +39,7 @@ namespace aoc6
         while (lineStream >> v)
             records.push_back(v);
 
-        if (verbose)
-            printf("parsed %d races\n", (int)durations.size());
+        util::verbose_print("parsed %d races\n", (int)durations.size());
         assert(durations.size() == records.size());
 
         std::vector<BoatRace> out;
@@ -74,9 +75,9 @@ namespace aoc6
         return t2Int - t1Int - 1;
     }
 
-    void solve6_part1(std::ifstream &input, bool verbose)
+    void solve6_part1(std::ifstream &input)
     {
-        auto races = parse(input, verbose);
+        auto races = parse(input);
 
         /*
           determine number of ways you can beat the record. multiply this value together across all races
@@ -101,11 +102,11 @@ namespace aoc6
         std::cout << mult << std::endl;
     }
 
-    void solve6_part2(std::ifstream &input, bool verbose)
+    void solve6_part2(std::ifstream &input)
     {
         // there's really just one race. all the numbers are bunched up.
 
-        auto races = parse(input, verbose);
+        auto races = parse(input);
 
         // combine races
         std::string duration;
@@ -116,8 +117,7 @@ namespace aoc6
             record += std::to_string(r.mRecordDistance);
         }
 
-        if (verbose)
-            printf("duration=%s record=%s\n", duration.c_str(), record.c_str());
+        util::verbose_print("duration=%s record=%s\n", duration.c_str(), record.c_str());
 
         BoatRace r{std::stoll(duration), std::stoll(record)};
         std::cout << solve_race(r) << std::endl;
