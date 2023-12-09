@@ -9,6 +9,7 @@
 #include "day_04/solution.h"
 #include "day_05/solution.h"
 #include "day_06/solution.h"
+#include "day_07/solution.h"
 
 int main(int argc, char **argv)
 {
@@ -74,6 +75,13 @@ int main(int argc, char **argv)
             aoc6::solve6_part1(input_file);
         else
             aoc6::solve6_part2(input_file);
+    }
+    else if (day == 7)
+    {
+        if (variant == 1)
+            aoc7::solve7_part1(input_file);
+        else
+            aoc7::solve7_part2(input_file);
     }
 
     input_file.close();
