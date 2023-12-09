@@ -48,7 +48,7 @@ namespace aoc4
         return out;
     }
 
-    void solve4_part1(std::ifstream &input)
+    void solve_part1(std::ifstream &input)
     {
         std::vector<Game> games = parse(input);
 
@@ -68,7 +68,7 @@ namespace aoc4
         std::cout << sum << std::endl;
     }
 
-    void solve4_part2(std::ifstream &input)
+    void solve_part2(std::ifstream &input)
     {
         std::vector<Game> games = parse(input);
         std::vector<int> cardCopies(games.size());

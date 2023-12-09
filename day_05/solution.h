@@ -174,7 +174,7 @@ namespace aoc5
         return out;
     }
 
-    void solve5_part1(std::ifstream &input)
+    void solve_part1(std::ifstream &input)
     {
         Data d = parse(input);
 
@@ -189,7 +189,7 @@ namespace aoc5
         std::cout << minLocation << std::endl;
     }
 
-    void solve5_part2(std::ifstream &input)
+    void solve_part2(std::ifstream &input)
     {
         Data d = parse(input);
 

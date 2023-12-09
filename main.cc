@@ -10,6 +10,7 @@
 #include "day_05/solution.h"
 #include "day_06/solution.h"
 #include "day_07/solution.h"
+#include "day_08/solution.h"
 
 int main(int argc, char **argv)
 {
@@ -37,51 +38,58 @@ int main(int argc, char **argv)
     if (day == 1)
     {
         if (variant == 1)
-            aoc1::solve1_part1(input_file);
+            aoc1::solve_part1(input_file);
         else
-            aoc1::solve1_part2(input_file);
+            aoc1::solve_part2(input_file);
     }
     else if (day == 2)
     {
         if (variant == 1)
-            aoc2::solve2_part1(input_file);
+            aoc2::solve_part1(input_file);
         else
-            aoc2::solve2_part2(input_file);
+            aoc2::solve_part2(input_file);
     }
     else if (day == 3)
     {
         if (variant == 1)
-            aoc3::solve3_part1(input_file);
+            aoc3::solve_part1(input_file);
         else
-            aoc3::solve3_part2(input_file);
+            aoc3::solve_part2(input_file);
     }
     else if (day == 4)
     {
         if (variant == 1)
-            aoc4::solve4_part1(input_file);
+            aoc4::solve_part1(input_file);
         else
-            aoc4::solve4_part2(input_file);
+            aoc4::solve_part2(input_file);
     }
     else if (day == 5)
     {
         if (variant == 1)
-            aoc5::solve5_part1(input_file);
+            aoc5::solve_part1(input_file);
         else
-            aoc5::solve5_part2(input_file);
+            aoc5::solve_part2(input_file);
     }
     else if (day == 6)
     {
         if (variant == 1)
-            aoc6::solve6_part1(input_file);
+            aoc6::solve_part1(input_file);
         else
-            aoc6::solve6_part2(input_file);
+            aoc6::solve_part2(input_file);
     }
     else if (day == 7)
     {
         if (variant == 1)
-            aoc7::solve7_part1(input_file);
+            aoc7::solve_part1(input_file);
         else
-            aoc7::solve7_part2(input_file);
+            aoc7::solve_part2(input_file);
+    }
+    else if (day == 8)
+    {
+        if (variant == 1)
+            aoc8::solve_part1(input_file);
+        else
+            aoc8::solve_part2(input_file);
     }
 
     input_file.close();

@@ -75,7 +75,7 @@ namespace aoc6
         return t2Int - t1Int - 1;
     }
 
-    void solve6_part1(std::ifstream &input)
+    void solve_part1(std::ifstream &input)
     {
         auto races = parse(input);
 
@@ -102,7 +102,7 @@ namespace aoc6
         std::cout << mult << std::endl;
     }
 
-    void solve6_part2(std::ifstream &input)
+    void solve_part2(std::ifstream &input)
     {
         // there's really just one race. all the numbers are bunched up.
 

@@ -25,7 +25,7 @@ namespace aoc1
 
     const int MAX_DIGIT_LEN = 5;
 
-    void solve1_part1(std::ifstream &input)
+    void solve_part1(std::ifstream &input)
     {
         std::string line;
         int sum = 0;
@@ -47,7 +47,7 @@ namespace aoc1
         std::cout << sum << std::endl;
     }
 
-    void solve1_part2(std::ifstream &input)
+    void solve_part2(std::ifstream &input)
     {
         // same as above but the first "digit" can be spelt out with text.
 

@@ -159,7 +159,7 @@ namespace aoc7
         return out;
     }
 
-    void solve7_part1(std::ifstream &input)
+    void solve_part1(std::ifstream &input)
     {
         auto hands = parse(input);
 
@@ -182,7 +182,7 @@ namespace aoc7
         std::cout << sum << std::endl;
     }
 
-    void solve7_part2(std::ifstream &input)
+    void solve_part2(std::ifstream &input)
     {
         // now "J" is a joker - can be any card.
         // but it's the weakest for the tiebreaker rule.

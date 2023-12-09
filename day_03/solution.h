@@ -69,7 +69,7 @@ namespace aoc3
         return std::make_pair(digits, symbolLocs);
     }
 
-    void solve3_part1(std::ifstream &input)
+    void solve_part1(std::ifstream &input)
     {
         auto [digits, symbols] = parse(input);
 
@@ -105,7 +105,7 @@ namespace aoc3
         std::cout << sum << std::endl;
     }
 
-    void solve3_part2(std::ifstream &input)
+    void solve_part2(std::ifstream &input)
     {
         auto [digits, symbols] = parse(input);
 

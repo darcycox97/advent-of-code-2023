@@ -86,7 +86,7 @@ namespace aoc2
         return games;
     }
 
-    void solve2_part1(std::ifstream &input)
+    void solve_part1(std::ifstream &input)
     {
         const int availRed = 12;
         const int availGreen = 13;
@@ -114,7 +114,7 @@ namespace aoc2
         std::cout << sum << std::endl;
     }
 
-    void solve2_part2(std::ifstream &input)
+    void solve_part2(std::ifstream &input)
     {
         // find the fewest number of cubes of each color to make each game possible.
 
