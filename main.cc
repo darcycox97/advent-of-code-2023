@@ -12,8 +12,9 @@
 #include "day_07/solution.h"
 #include "day_08/solution.h"
 #include "day_09/solution.h"
-#include "day_11/solution.h"
 #include "day_10/solution.h"
+#include "day_11/solution.h"
+#include "day_12/solution.h"
 #include "day_14/solution.h"
 #include "day_15/solution.h"
 #include "day_16/solution.h"
@@ -117,6 +118,13 @@ int main(int argc, char **argv)
             aoc11::solve_part1(input_file);
         else
             aoc11::solve_part2(input_file);
+    }
+    else if (day == 12)
+    {
+        if (variant == 1)
+            aoc12::solve_part1(input_file);
+        else
+            aoc12::solve_part2(input_file);
     }
     else if (day == 14)
     {
