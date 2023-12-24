@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <map>
 
 namespace aoc12
 {
@@ -30,60 +31,74 @@ namespace aoc12
         return out;
     }
 
-    int get_unique_combinations(std::string canvas, std::vector<int> structure, int &numCalls)
+    using CacheKey = std::pair<std::string, std::vector<int>>;
+    using Cache = std::map<CacheKey, uint64_t>;
+
+    uint64_t get_unique_combinations(std::string canvas, std::vector<int> structure, int &cacheMisses, Cache &cache)
     {
-        ++numCalls;
-        auto structureIt = structure.begin();
-        auto canvasIt = canvas.begin();
-        int contigCount = 0;
-        for (; canvasIt != canvas.end(); ++canvasIt)
+        CacheKey k{canvas, structure};
+        if (cache.contains(k))
         {
-            if (*canvasIt == '#')
-            {
-                ++contigCount;
-                if (structureIt == structure.end() || contigCount > *structureIt)
-                    return 0; // invalid configuration
-            }
-            else if (*canvasIt == '.')
-            {
-                if (contigCount > 0)
-                {
-                    if (structureIt == structure.end() || *structureIt != contigCount)
-                        return 0; // invalid configuration
-                    else
-                        ++structureIt; // matched a structure. move to the next
-                    contigCount = 0;
-                }
-            }
-            else
-            {
-                assert(*canvasIt == '?');
-                break; // found an unknown
-            }
+            util::verbose_print("cache hit for %s\n", canvas.c_str());
+            return cache.at(k);
         }
 
-        if (canvasIt == canvas.end())
+        ++cacheMisses;
+
+        if (canvas.empty())
+            return structure.empty();
+
+        if (structure.empty())
+            return canvas.find('#') == std::string::npos;
+
+        if (canvas[0] == '?')
         {
-            // reached the end with no unknowns. return 1 if valid, 0 if not.
-            if (structureIt == structure.end())
-            {
-                return contigCount == 0 ? 1 : 0;
-            }
-            else if (std::distance(structure.begin(), structureIt) != (int)(structure.size() - 1))
-            {
-                return 0; // multiple structures remaining that weren't matched
-            }
-            else
-            {
-                return *structureIt == contigCount ? 1 : 0;
-            }
+            uint64_t ways = 0;
+            canvas[0] = '.';
+            ways += get_unique_combinations(canvas, structure, cacheMisses, cache);
+            canvas[0] = '#';
+            ways += get_unique_combinations(canvas, structure, cacheMisses, cache);
+            cache[k] = ways;
+            return ways;
         }
 
-        int ways = 0;
-        *canvasIt = '#';
-        ways += get_unique_combinations(canvas, structure, numCalls);
-        *canvasIt = '.';
-        ways += get_unique_combinations(canvas, structure, numCalls);
+        if (canvas[0] == '.')
+        {
+            uint64_t ways = get_unique_combinations(canvas.substr(1, canvas.size() - 1), structure, cacheMisses, cache);
+            cache[k] = ways;
+            return ways;
+        }
+
+        assert(canvas[0] == '#');
+
+        int contiguous = 0;
+        for (char c : canvas)
+        {
+            if (contiguous == structure[0] && c == '#')
+            {
+                return 0; // invalid because we've got too many contiguous hashes
+            }
+            else if ((contiguous == structure[0] && c == '?'))
+            {
+                assert(canvas[contiguous] == '?');
+                canvas[contiguous] = '.'; // the only valid option. another # would extend the contiguous group
+                break;
+            }
+            else if (c == '.')
+            {
+                break;
+            }
+
+            ++contiguous;
+        }
+
+        if (contiguous < structure[0])
+            return 0; // not enough to fill the required structure
+
+        assert(contiguous == structure[0]);
+        std::vector<int> reducedStructure(std::next(structure.begin()), structure.end());
+        uint64_t ways = get_unique_combinations(canvas.substr(contiguous, canvas.size() - contiguous), reducedStructure, cacheMisses, cache);
+        cache[k] = ways;
         return ways;
     }
 
@@ -91,11 +106,22 @@ namespace aoc12
     {
         auto problem = parse(input);
 
-        int total = 0;
+        uint64_t total = 0;
         for (auto &[canvas, structure] : problem)
         {
+            Cache cache;
             int totalCalls = 0;
-            total += get_unique_combinations(canvas, structure, totalCalls);
+            uint64_t ways = get_unique_combinations(canvas, structure, totalCalls, cache);
+            total += ways;
+
+            std::string structStr;
+            for (auto s : structure)
+            {
+                structStr += std::to_string(s);
+                structStr += " ";
+            }
+
+            util::verbose_print("%llu ways to satisfy %s %s\n", ways, canvas.c_str(), structStr.c_str());
             util::verbose_print("called get_unique_combinations %d times for canvas %s\n", totalCalls, canvas.c_str());
         }
 
@@ -104,10 +130,11 @@ namespace aoc12
 
     void solve_part2(std::ifstream &input)
     {
-        int total = 0;
+        uint64_t total = 0;
         auto problem = parse(input);
         for (auto [canvas, structure] : problem)
         {
+            Cache cache;
             // expand the structure 5 times
             // e.g.
             // original: ##.?? 2, 1
@@ -126,7 +153,7 @@ namespace aoc12
 
             int totalCalls = 0;
             util::verbose_print("folded=%s, %llu groups\nunfolded=%s, %llu groups\n", canvas.c_str(), structure.size(), unfoldedCanvas.c_str(), unfoldedStructure.size());
-            total += get_unique_combinations(unfoldedCanvas, unfoldedStructure, totalCalls);
+            total += get_unique_combinations(unfoldedCanvas, unfoldedStructure, totalCalls, cache);
             util::verbose_print("called get_unique_combinations %d times for %s\n", totalCalls, unfoldedCanvas.c_str());
         }
 
